@@ -47,6 +47,43 @@ pub extern "C" fn encrypt_password(ptr: *const c_char) -> *mut c_char {
 }
 
 #[no_mangle]
+pub extern "C" fn decrypt_password(ptr: *const c_char) -> *mut c_char {
+    if ptr.is_null() {
+        return std::ptr::null_mut();
+    }
+
+    let c_str = unsafe { CStr::from_ptr(ptr) };
+    let encoded = match c_str.to_str() {
+        Ok(s) => s,
+        Err(_) => return std::ptr::null_mut(),
+    };
+
+    let data = match general_purpose::STANDARD.decode(encoded) {
+        Ok(d) => d,
+        Err(_) => return std::ptr::null_mut(),
+    };
+
+    if data.len() < 12 + 32 {
+        return std::ptr::null_mut();
+    }
+
+    let nonce = &data[..12];
+    let ciphertext = &data[12..data.len() - 32];
+    let key = &data[data.len() - 32..];
+
+    let mut buffer = ciphertext.to_vec();
+    let mut cipher = ChaCha20::new(key.into(), nonce.into());
+    cipher.apply_keystream(&mut buffer);
+
+    let decrypted = match String::from_utf8(buffer) {
+        Ok(s) => s,
+        Err(_) => return std::ptr::null_mut(),
+    };
+
+    CString::new(decrypted).unwrap().into_raw()
+}
+
+#[no_mangle]
 pub extern "C" fn free_string(ptr: *mut c_char) {
     if ptr.is_null() {
         return;

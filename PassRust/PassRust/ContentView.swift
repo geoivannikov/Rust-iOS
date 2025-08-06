@@ -10,33 +10,58 @@ import SwiftUI
 struct ContentView: View {
     @State private var password = ""
     @State private var encrypted = ""
+    @State private var decrypted = ""
 
     var body: some View {
         VStack(spacing: 20) {
-            Text("Generated password:")
-            Text(password)
-                .padding()
+            if password.isEmpty {
+                Button("Generate Password") {
+                    if let raw = generate_password(16) {
+                        let pwd = String(cString: raw)
+                        password = pwd
+                        free_string(raw)
+                    }
+                }
+            } else {
+                Text("Password:")
+                    .bold()
+                Text(password)
+                    .padding()
 
-            Text("Encrypted:")
-            Text(encrypted)
-                .padding()
-
-            Button("Generate & Encrypt") {
-                if let raw = generate_password(16) {
-                    let pwd = String(cString: raw)
-                    password = pwd
-                    free_string(raw)
-
-                    if let encRaw = encrypt_password(pwd) {
-                        encrypted = String(cString: encRaw)
-                        free_string(encRaw)
-                    } else {
-                        encrypted = "Encryption failed"
+                if encrypted.isEmpty {
+                    Button("Encrypt Password") {
+                        if let encRaw = encrypt_password(password) {
+                            encrypted = String(cString: encRaw)
+                            free_string(encRaw)
+                        }
                     }
                 } else {
-                    password = "Generation failed"
-                    encrypted = ""
+                    Text("Encrypted:")
+                        .bold()
+                    Text(encrypted)
+                        .padding()
+
+                    if decrypted.isEmpty {
+                        Button("Decrypt Password") {
+                            if let decRaw = decrypt_password(encrypted) {
+                                decrypted = String(cString: decRaw)
+                                free_string(decRaw)
+                            }
+                        }
+                    } else {
+                        Text("Decrypted:")
+                            .bold()
+                        Text(decrypted)
+                            .padding()
+                    }
                 }
+
+                Button("Reset") {
+                    password = ""
+                    encrypted = ""
+                    decrypted = ""
+                }
+                .foregroundColor(.red)
             }
         }
         .padding()
