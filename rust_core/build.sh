@@ -6,6 +6,10 @@ OUT_DIR=target/xcframework
 HEADER_OUT=bridge.h
 TEMP_DIR=target/xcframework_temp
 
+echo "Running tests..."
+cargo test
+echo "Tests passed."
+
 echo "Cleaning target before building XCFramework..."
 rm -rf $OUT_DIR
 rm -rf $TEMP_DIR

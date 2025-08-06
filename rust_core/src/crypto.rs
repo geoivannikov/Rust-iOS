@@ -71,3 +71,57 @@ pub extern "C" fn decrypt_password(ptr: *const c_char) -> *mut c_char {
 
     CString::new(decrypted).unwrap().into_raw()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::ffi::CString;
+
+    #[test]
+    fn test_encrypt_decrypt_roundtrip() {
+        let original = "SuperSecret123!";
+        let input = CString::new(original).unwrap();
+        let encrypted_ptr = encrypt_password(input.as_ptr());
+
+        assert!(!encrypted_ptr.is_null());
+
+        let decrypted_ptr = decrypt_password(encrypted_ptr);
+        assert!(!decrypted_ptr.is_null());
+
+        let decrypted = unsafe { CStr::from_ptr(decrypted_ptr).to_str().unwrap() };
+        assert_eq!(decrypted, original);
+
+        unsafe {
+            CString::from_raw(encrypted_ptr);
+            CString::from_raw(decrypted_ptr as *mut _);
+        }
+    }
+
+    #[test]
+    fn test_encrypt_null_input() {
+        let result = encrypt_password(std::ptr::null());
+        assert!(result.is_null());
+    }
+
+    #[test]
+    fn test_decrypt_null_input() {
+        let result = decrypt_password(std::ptr::null());
+        assert!(result.is_null());
+    }
+
+    #[test]
+    fn test_decrypt_invalid_base64() {
+        let invalid_input = CString::new("!!!not_base64!!!").unwrap();
+        let result = decrypt_password(invalid_input.as_ptr());
+        assert!(result.is_null());
+    }
+
+    #[test]
+    fn test_decrypt_short_data() {
+        let encoded = base64::engine::general_purpose::STANDARD.encode("short");
+        let input = CString::new(encoded).unwrap();
+        let result = decrypt_password(input.as_ptr());
+        assert!(result.is_null());
+    }
+}
+
