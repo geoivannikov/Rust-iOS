@@ -64,7 +64,7 @@ mod tests {
     fn make_store() -> PasswordStorage {
         let dir = tempdir().unwrap();
         let path = dir.path().join("test_db");
-        let key = [42u8; 32]; // фиксированный ключ для стабильности тестов
+        let key = [42u8; 32];
         PasswordStorage::new(path.to_str().unwrap(), key)
     }
 
