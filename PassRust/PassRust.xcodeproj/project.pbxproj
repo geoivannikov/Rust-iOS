@@ -9,10 +9,12 @@
 /* Begin PBXBuildFile section */
 		82DC4C612E3EC2E4007321FE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82DC4C5B2E3EC2E4007321FE /* Preview Assets.xcassets */; };
 		82DC4C622E3EC2E4007321FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82DC4C5D2E3EC2E4007321FE /* Assets.xcassets */; };
-		82DC4C632E3EC2E4007321FE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DC4C5E2E3EC2E4007321FE /* ContentView.swift */; };
+		82DC4C632E3EC2E4007321FE /* PasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DC4C5E2E3EC2E4007321FE /* PasswordView.swift */; };
 		82DC4C642E3EC2E4007321FE /* PassRustApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DC4C5F2E3EC2E4007321FE /* PassRustApp.swift */; };
 		82DC4C742E3ECA85007321FE /* rust_core.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82DC4C732E3ECA84007321FE /* rust_core.xcframework */; };
 		82DC4C752E3ECA85007321FE /* rust_core.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 82DC4C732E3ECA84007321FE /* rust_core.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		82DC4D052E43FB09007321FE /* RustBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DC4D042E43FB08007321FE /* RustBridge.swift */; };
+		82DC4D082E43FBB3007321FE /* PasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DC4D072E43FBB1007321FE /* PasswordViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,11 +35,13 @@
 		82DC4C4A2E3EC274007321FE /* PassRust.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PassRust.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82DC4C5B2E3EC2E4007321FE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		82DC4C5D2E3EC2E4007321FE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		82DC4C5E2E3EC2E4007321FE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		82DC4C5E2E3EC2E4007321FE /* PasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordView.swift; sourceTree = "<group>"; };
 		82DC4C5F2E3EC2E4007321FE /* PassRustApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassRustApp.swift; sourceTree = "<group>"; };
 		82DC4C6A2E3EC5DE007321FE /* PassRust-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PassRust-Bridging-Header.h"; sourceTree = "<group>"; };
 		82DC4C6D2E3EC6FE007321FE /* bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = bridge.h; path = ../rust_core/bridge.h; sourceTree = SOURCE_ROOT; };
 		82DC4C732E3ECA84007321FE /* rust_core.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = rust_core.xcframework; path = ../rust_core/target/xcframework/rust_core.xcframework; sourceTree = "<group>"; };
+		82DC4D042E43FB08007321FE /* RustBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RustBridge.swift; sourceTree = "<group>"; };
+		82DC4D072E43FBB1007321FE /* PasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,10 +85,11 @@
 		82DC4C602E3EC2E4007321FE /* PassRust */ = {
 			isa = PBXGroup;
 			children = (
-				82DC4C652E3EC2E6007321FE /* RustLib */,
-				82DC4C5C2E3EC2E4007321FE /* Preview Content */,
 				82DC4C5D2E3EC2E4007321FE /* Assets.xcassets */,
-				82DC4C5E2E3EC2E4007321FE /* ContentView.swift */,
+				82DC4C5C2E3EC2E4007321FE /* Preview Content */,
+				82DC4C652E3EC2E6007321FE /* RustLib */,
+				82DC4D062E43FBA1007321FE /* viewModel */,
+				82DC4D092E43FC4A007321FE /* view */,
 				82DC4C5F2E3EC2E4007321FE /* PassRustApp.swift */,
 			);
 			path = PassRust;
@@ -94,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				82DC4C6D2E3EC6FE007321FE /* bridge.h */,
+				82DC4D042E43FB08007321FE /* RustBridge.swift */,
 			);
 			path = RustLib;
 			sourceTree = "<group>";
@@ -104,6 +110,22 @@
 				82DC4C732E3ECA84007321FE /* rust_core.xcframework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		82DC4D062E43FBA1007321FE /* viewModel */ = {
+			isa = PBXGroup;
+			children = (
+				82DC4D072E43FBB1007321FE /* PasswordViewModel.swift */,
+			);
+			path = viewModel;
+			sourceTree = "<group>";
+		};
+		82DC4D092E43FC4A007321FE /* view */ = {
+			isa = PBXGroup;
+			children = (
+				82DC4C5E2E3EC2E4007321FE /* PasswordView.swift */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,7 +203,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82DC4C632E3EC2E4007321FE /* ContentView.swift in Sources */,
+				82DC4D052E43FB09007321FE /* RustBridge.swift in Sources */,
+				82DC4D082E43FBB3007321FE /* PasswordViewModel.swift in Sources */,
+				82DC4C632E3EC2E4007321FE /* PasswordView.swift in Sources */,
 				82DC4C642E3EC2E4007321FE /* PassRustApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
